@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Courses</title>
+		<meta charset="utf-8">
+		<meta name="discription" content="Courses Demo Webpage for Practice.">
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="/static/css/index.css">
+	</head>
+	<body>
+		<div id="wrapper">
+			<h1>Add a new course</h1>
+			<form class="form-horizontal" action="/courses/add" method="post">
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="name">Name:</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" name="name" placeholder="Enter Course Name">
+					</div>
+					{% with errors = get_flashed_messages(category_filter=["name"]) %}
+						{% if errors %}
+						<span class="col-sm-4 error">{{ errors[0] }}</span>
+						{% endif %}
+					{% endwith %}
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="description">Description:</label>
+					<div class="col-sm-6">
+						<textarea class="form-control" rows="5" name="description"></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-6">
+						<button type="submit" class="btn btn-default">Submit</button>
+					</div>
+				</div>
+			</form>
+
+			<hr>
+
+			<h1>Courses</h1>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Course Name</th>
+						<th>Description</th>
+						<th>Date Added</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for course in all_courses: %}
+					<tr>
+						<td>{{course["name"]}}</td>
+						<td>{{course["description"]}}</td>
+						<td>{{course["created_at"].strftime("%B %d, %Y")}}</td>
+						<td><a href="courses/destroy/{{course['id']}}">remove</a></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		</div>
+	</body>
+</html>
